@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+
+<style>
+    .circle {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  text-align: center;
+}
+</style>
+
+<script>
+    function v_search(){
+        if( $("#num1").val() == $("#num2").val() == $("#num3").val() == $("#num4").val() == $("#num5").val() == $("#num6").val() && $("#num1").val() == '' )
+            {
+                alert("Select at least one ball");
+                return false;
+            }
+        else
+            return true;
+    }
+</script>
+
+<div>
+    <div>Search Number/s in Draws</div>
+    <div>
+        <form method="post" action="search">
+            {% csrf_token %}
+            <span><input name="num1" id="num1" type="number" min="1" max="69" class="circle"></span>
+            <span><input name="num2" id="num2" type="number" min="1" max="69" class="circle"></span>
+            <span><input name="num3" id="num3" type="number" min="1" max="69" class="circle"></span>
+            <span><input name="num4" id="num4" type="number" min="1" max="69" class="circle"></span>
+            <span><input name="num5" id="num5" type="number" min="1" max="69" class="circle"></span>
+            <span><input name="num6" id="num6" type="number" min="1" max="26" class="circle" style="background-color:red;"></span>
+            <div>
+                <input type="radio" name="lottery" checked value="pb"> Powerball
+                <input type="radio" name="lottery"  value="mm"> Mega Millions
+                <input type="radio" name="lottery"  value="pbmm"> Both
+            </div>
+            <div>
+                <button type="submit" onclick="return v_search();"> Search </button> <input type="reset" value="Clear">
+            </div>
+        </form>
+    </div>
+
+
+</div>
+
+<div>
+    <h3>Analytics</h3> On Draws data from more then 10 years<br><br>
+
+    <h5>Frequencies: (like num 1 drawn 350 times or 8,35 drawn 35 times)</h5>
+    <form method="post" action="frequencies">
+    {% csrf_token %}
+    <div>
+        Balls:
+        <input type="radio" name="balls" value="1"> 1
+        <input type="radio" name="balls" value="2"> 2
+        <input type="radio" name="balls" value="3" checked> 3
+    </div>
+    <div>
+        Search In:
+        <input type="radio" name="lottery" checked value="pb"> Powerball
+        <input type="radio" name="lottery"  value="mm"> Mega Millions
+        <input type="radio" name="lottery"  value="pbmm"> Both
+    </div>
+    <div>
+        <button type="submit"> Search </button> <input type="reset" value="Clear">
+    </div>
+    </form>
+    <br><br>
+
+    <h5>Consecutive: (like for 3 balls: 44,45,46 or 1,2,3)</h5>
+    <form method="post" action="consecutive">
+    {% csrf_token %}
+    <div>
+        Balls:
+        <input type="radio" name="balls" value="2"> 2
+        <input type="radio" name="balls" value="3" checked> 3
+        <input type="radio" name="balls" value="4"> 4
+    </div>
+    <div>
+        Search In:
+        <input type="radio" name="lottery" checked value="pb"> Powerball
+        <input type="radio" name="lottery"  value="mm"> Mega Millions
+        <input type="radio" name="lottery"  value="pbmm"> Both
+    </div>
+    <div>
+        <button type="submit"> Search </button> <input type="reset" value="Clear">
+    </div>
+    </form>
+
+    <br><br>
+    <h5>Statistics</h5>
+    <ul>
+        <li>Average of Draws: Powerball, Mega Millions</li>
+        <li>Average of Ball numbers in ordered: 1 2 3 4 5 PB/MB
+            <input type="radio" name="lottery_avg" value="pb" >PB |
+            <input type="radio" name="lottery_avg" value="mm" >MM |
+            <input type="radio" name="lottery_avg" value="pbmm" checked>Both |
+        </li>
+        <li>Mean values of Ball numbers in ordered: 1 2 3 4 5 PB/MB
+            <input type="radio" name="lottery_mean" value="pb" >PB |
+            <input type="radio" name="lottery_mean" value="mm" >MM |
+            <input type="radio" name="lottery_mean" value="pbmm" checked>Both |
+        </li>
+    </ul>
+
+    <br><br>
+    <h3>Advanced Quick Pick:</h3>
+    <div>Options to ignore unlikely patterns, choose from combination of hot, cold and your lucky numbers. </div>
+    <div><input type="radio" name="qp_lottery" value="pb" checked>Powerball | <input type="radio" name="qp_lottery" value="mm">Mega Millions</div>
+    <div>Define few of your lucky numbers: <input type="text" name="my_lucky" placeholder="eg: 15,21,31,5"></div>
+    <div>
+        Do not repeat balls from previous draws:
+        5 + PB <input type="radio" name="d_n_r" value="6"> |
+        5  <input type="radio" name="d_n_r" value="5" checked> |
+        4  <input type="radio" name="d_n_r" value="4"> |
+        3  <input type="radio" name="d_n_r" value="3"> |
+        2  <input type="radio" name="d_n_r" value="2"> |
+        1  <input type="radio" name="d_n_r" value="1"> |
+    </div>
+    <div>
+        <ul>
+            <li><input type="radio" name="from_set" value="mf"> From Most Frequent</li>
+            <li><input type="radio" name="from_set" value="lf"> From Least Frequent</li>
+            <li><input type="radio" name="from_set" value="mflf"> From Most + Least Frequent</li>
+            <li><input type="radio" name="from_set" value="mfmyl"> From Most Frequent + My Lucky Numbers</li>
+            <li><input type="radio" name="from_set" value="mfmyl"> From Least Frequent + My Lucky Numbers</li>
+            <li><input type="radio" name="from_set" value="myl"> From My Lucky Numbers</li>
+            <li><input type="radio" name="from_set" value="ignore" checked> Ignore these bullet point</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

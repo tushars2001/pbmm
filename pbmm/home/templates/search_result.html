@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+{% load humanize %}
+<style>
+    .circle {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  text-align: center;
+}
+</style>
+
+Found: {{searchdata|length}} Draws
+<table border="1">
+    <tbody>
+        <tr>
+            <th>Lottery</th>
+            <th>Date</th>
+            <th>Draw</th>
+            <th>Jackpot</th>
+        </tr>
+    {% for row in searchdata %}
+
+        <tr>
+            <td>
+                {% if row.lottery == "pb" %}
+                    Powerball
+                {% endif %}
+                {% if row.lottery == "mm" %}
+                    Mega Millions
+                {% endif %}
+            </td>
+            <td>
+                {{row.dt|date:"SHORT_DATE_FORMAT"}}
+            </td>
+            <td>
+                <span><input name="num1" id="num1" type="number" min="1" max="69" class="circle" value="{{row.n1}}" disabled {% if row.n1 in numbers %} style="background-color:yellow;" {% endif %}></span>
+                <span><input name="num2" id="num2" type="number" min="1" max="69" class="circle" value="{{row.n2}}" disabled {% if row.n2 in numbers %} style="background-color:yellow;" {% endif %}></span>
+                <span><input name="num3" id="num3" type="number" min="1" max="69" class="circle" value="{{row.n3}}" disabled {% if row.n3 in numbers %} style="background-color:yellow;" {% endif %}></span>
+                <span><input name="num4" id="num4" type="number" min="1" max="69" class="circle" value="{{row.n4}}" disabled {% if row.n4 in numbers %} style="background-color:yellow;" {% endif %}></span>
+                <span><input name="num5" id="num5" type="number" min="1" max="69" class="circle" value="{{row.n5}}" disabled {% if row.n5 in numbers %} style="background-color:yellow;" {% endif %}></span>
+                <span><input name="num6" id="num6" type="number" min="1" max="26" class="circle" value="{{row.n6}}" disabled {% if row.n6 == bigball %} style="color:yellow;background-color:red;" {% endif %} style="background-color:red;"></span>
+            </td>
+            <td>
+                {{row.pot|intword|default_if_none:""}}
+            </td>
+        </tr>
+    {% endfor   %}
+    </tbody>
+</table>
+
+
+{% endblock %}

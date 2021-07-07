@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" >
+    <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}" type="javascript"></script>
+    <script type="text/javascript" src="{% static 'popper-core-master/src/popper.js' %}" type="javascript"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.js' %}" type="javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'DataTables/datatables.min.css' %}" >
+    <script type="text/javascript" src="{% static 'DataTables/datatables.js' %}" type="javascript"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-select.css' %}" >
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-select.min.js' %}" type="javascript"></script>
+
+    <title>Lottery</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-8">
+          <h1 class="mt-2 text-center"><a href="/"><img src="{% static 'images/qagile-logo.png' %}"></a></h1>
+          <hr class="mt-0 mb-4">
+
+        </div>
+      </div>
+      {% block content %}
+      {% endblock %}
+    </div>
+    <div style="width:100%;margin:0 auto;text-align:center;font-size:small;color:grey"><a href="/about/" style="font-size:small;color:grey"> About </a> <a href="/contact/" style="font-size:small;color:grey">Contact</a> &#169; 2020</div>
+  </body>
+</html>

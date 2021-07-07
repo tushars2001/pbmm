@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block content %}
+{% load humanize %}
+<style>
+    .circle {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  text-align: center;
+}
+</style>
+<script>
+    var CSRF_TOKEN = '{{ csrf_token }}';
+</script>
+<script>
+    function v_search_submit
+    (balls, lottery){
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "search");
+
+        balls_arr = balls.split(",");
+
+        for (i=0; i< balls_arr.length; i++){
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "num"+(i+1));
+            hiddenField.setAttribute("value", balls_arr[i]);
+            form.appendChild(hiddenField);
+        }
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "csrfmiddlewaretoken");
+        hiddenField.setAttribute("value", '{{csrf_token}}');
+        form.appendChild(hiddenField);
+
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "lottery");
+        hiddenField.setAttribute("value", lottery);
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+
+Found: {{searchdata|length}} Draws for {{balls}} balls
+<table border="1">
+    <tbody>
+        <tr>
+            <th>Balls</th>
+            <th>Lottery</th>
+            <th>Frequency</th>
+            <th></th>
+        </tr>
+    {% for row in searchdata %}
+
+        <tr>
+            <td>
+                {{row.balls}}
+            </td>
+            <td>
+                {% if row.lottery == "pb" %}
+                    Powerball
+                {% endif %}
+                {% if row.lottery == "mm" %}
+                    Mega Millions
+                {% endif %}
+            </td>
+            <td>{{row.frequency}}</td>
+            <td>
+                    <button type="button" onclick="v_search_submit('{{row.balls}}','{{row.lottery}}')">See Draws</button>
+            </td>
+        </tr>
+    {% endfor   %}
+    </tbody>
+</table>
+
+
+{% endblock %}
